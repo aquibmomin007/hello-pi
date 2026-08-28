@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-pi
+  labels:
+    app: hello-pi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-pi
+  template:
+    metadata:
+      labels:
+        app: hello-pi
+    spec:
+      # Secret that lets k3s pull the image from GHCR (created on the Pi manually)
+      imagePullSecrets:
+        - name: ghcr-secret
+      containers:
+        - name: hello-pi
+          image: ghcr.io/aquibmomin007/hello-pi:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
